@@ -16,96 +16,80 @@
     display: flex;
     align-items: center;
     padding: 4px 40px;
-    background-color: black;
+    background-color: #000;
     grid-column: 1 / 3;
     font-size: 18px;
-    border-bottom: 1px solid silver;
-}
-
-.spotify__logo {
-    display: flex;
-    align-items: center;
-    width: 150px;   
+    border-bottom: 1px solid #c0c0c0;
 }
 
 .header__search {
     width: 100%;
     height: 100%;
     min-width: 200px;
-    max-width: 500px;
+    max-width: 350px;
     margin-left: auto;
-    border-radius: 500px;
+    border-radius: 30px;
     padding-left: 20px;
+}
+
+.content {
+    color: #fff;
+    background-color: #808080;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-size: 40px;
+}
+
+.spotify__logo {
+    align-items: center;
+    width: 150px;   
 }
 
 .side__menu {
     padding: 10px;
-    background-color: dimgray;
-    border-right: 1px solid silver;   
+    background-color: #696969;
+    border-right: 1px solid #c0c0c0;   
 }
 
 .menu__items {
     list-style: none;
     font-size: 20px;
     padding-bottom: 24px;
-    border-bottom: 1px solid silver;
+    border-bottom: 1px solid #c0c0c0;
 }
 
 .menu__link {
     cursor: pointer;
-    color: white;
+    color: #fff;
+    text-decoration: none
 }
 
 .menu__link:hover{
-    color: DarkSlateGray;
-}
-
-.menu__link{
-    color: white;
-    text-decoration: none   
-}
-
-.content {
-    color: white;
-    background-color: gray;
-    display: flex;
-    flex-direction: column;
-    font-size: 16px;
+    color: #2f4f4f;
 }
 
 .footer {
-    border-top: 1px solid silver;
+    border-top: 1px solid #c0c0c0;
     height: 100px;
-    background-color: black;
+    background-color: #000;
     grid-column: 1 / 3;
+    padding: 30px 20px;
 }
 
-.header__menu {
-    position: flex; 
-    margin-left: auto;
-    margin-right: auto;
+.footer__navigation {
+    display: flex;
+    flex-direction: column;
 }
 
-.header__menu__items {
-    list-style: none;
-    font-size: 18px;
-    text-align: center;
+.footer__link {
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none
 }
 
-.header__menu__item {
-    display: inline-block;
-    padding: 0px 15px;
+.footer__link:hover{
+    color: #d3d3d3;
 }
-
-.header__menu__link {
-    text-decoration: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-}
-
-.header__menu__link:hover {
-    border-radius: 5px;
-    background: whitesmoke;
-    color: DarkSlateGray;
-  }
