@@ -1,8 +1,10 @@
-const INITURL = new URL("http://ws.audioscrobbler.com/2.0/");
+/** Константы и переменная flag */
+const INITURL = new URL("https://ws.audioscrobbler.com/2.0/");
 const CONTAINER = document.querySelector(".cards__container");
 const SEARCH = document.querySelector(".header__search");
 let flag = 1;
 
+/** Обработчик события для поиска по трекам или исполнителям в зависимости от значения flag */
 SEARCH.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     if (e.target.value === "") {
@@ -18,6 +20,7 @@ SEARCH.addEventListener("keydown", (e) => {
   }
 });
 
+/** Очистка контейнера с карточками */
 function clearContainer() {
   if (CONTAINER.firstChild) {
     while (CONTAINER.firstChild) {
@@ -26,61 +29,102 @@ function clearContainer() {
   }
 }
 
+/**
+ * Поле с названием трека или с именем исполнителя
+ * @param {*} item трек/исполнитель
+ * @returns summary элемент с названием item
+ */
 function createName(item) {
-  itemName = document.createElement("summary");
-  itemName.className = "card__summary";
-  itemName.textContent = item.name;
-  return itemName;
+  const ITEMNAME = document.createElement("summary");
+  ITEMNAME.className = "card__summary";
+  ITEMNAME.textContent = item.name;
+  return ITEMNAME;
 }
 
+/**
+ * Оболочка a для ссылки на исполнителя трека
+ * @param {*} item трек/исполнитель
+ * @returns a элемент
+ */
 function createArtistLink(item) {
-  artistLink = document.createElement("a");
-  artistLink.className = "card__link";
-  artistLink.href = item.artist.url;
-  artistLink.target = "_blank";
-  artistLink.rel = "noopener";
-  return artistLink;
+  const ARTISTLINK = document.createElement("a");
+  ARTISTLINK.className = "card__link";
+  ARTISTLINK.href = item.artist.url;
+  ARTISTLINK.target = "_blank";
+  ARTISTLINK.rel = "noopener";
+  return ARTISTLINK;
 }
 
+/**
+ * Имя исполнителя по треку
+ * @param {*} item трек
+ * @returns li элемент
+ */
 function createArtist(item) {
-  artist = document.createElement("li");
-  artist.textContent = item.artist.name;
-  return artist;
+  const ARTIST = document.createElement("li");
+  ARTIST.textContent = item.artist.name;
+  return ARTIST;
 }
 
+/**
+ * Создание листа, содержащего информацию о треке/исполнителе
+ * @returns ul элемент
+ */
 function createList() {
-  list = document.createElement("ul");
-  list.className = "card__list";
-  return list;
+  const LIST = document.createElement("ul");
+  LIST.className = "card__list";
+  return LIST;
 }
 
+/**
+ * Поле с количеством прослушиваний трека/исполнителя
+ * @param {*} item трек/исполнитель
+ * @returns li элемент
+ */
 function createPlayCount(item) {
-  playCount = document.createElement("li");
-  playCount.textContent = "Количество прослушиваний: " + item.playcount;
-  return playCount;
+  const PLAYCOUNT = document.createElement("li");
+  PLAYCOUNT.textContent = "Количество прослушиваний: " + item.playcount;
+  return PLAYCOUNT;
 }
 
+/**
+ * Поле с количеством слушателей трека/исполнителя
+ * @param {*} item трек/исполнитель
+ * @returns li элемент
+ */
 function createListenersCount(item) {
-  listenersCount = document.createElement("li");
-  listenersCount.textContent = "Количество слушателей: " + item.listeners;
-  return listenersCount;
+  const LISTENERSCOUNT = document.createElement("li");
+  LISTENERSCOUNT.textContent = "Количество слушателей: " + item.listeners;
+  return LISTENERSCOUNT;
 }
 
+/**
+ * Оболочка a для ссылки на трек/исполнителя
+ * @param {*} item трек/исполнитель
+ * @returns a элемент
+ */
 function createLink(item) {
-  trackLink = document.createElement("a");
-  trackLink.className = "card__link";
-  trackLink.href = item.url;
-  trackLink.target = "_blank";
-  trackLink.rel = "noopener";
-  return trackLink;
+  const TRACKLINK = document.createElement("a");
+  TRACKLINK.className = "card__link";
+  TRACKLINK.href = item.url;
+  TRACKLINK.target = "_blank";
+  TRACKLINK.rel = "noopener";
+  return TRACKLINK;
 }
 
+/**
+ * Поле с количеством прослушиваний трека/исполнителя
+ * @returns li элемент
+ */
 function createLastFMLink() {
-  lastFMLink = document.createElement("li");
-  lastFMLink.textContent = "Ссылка на Last FM";
-  return lastFMLink;
+  const LASTFMLINK = document.createElement("li");
+  LASTFMLINK.textContent = "Ссылка на Last FM";
+  return LASTFMLINK;
 }
 
+/**
+ * Очистка контейнера и установка параметров GET-запроса для списка лучших треков
+ */
 function setTopMusicSettings() {
   clearContainer();
   INITURL.search =
@@ -89,54 +133,67 @@ function setTopMusicSettings() {
   getTopMusic();
 }
 
+/**
+ * GET-запрос списка лучших треков и создание списка
+ */
 function getTopMusic() {
   fetch(INITURL)
     .then((result) => result.json())
     .then((data) =>
       data.tracks.track.forEach((track) => {
-        card = document.createElement("details");
-        card.className = "big__card";
-        list = createList();
-        trackLink = createLink(track);
-        card.appendChild(createName(track));
-        artistLink = createArtistLink(track)
-        artistLink.appendChild(createArtist(track));
-        list.appendChild(artistLink);
-        list.appendChild(createPlayCount(track));
-        list.appendChild(createListenersCount(track));
-        trackLink.appendChild(createLastFMLink());
-        list.appendChild(trackLink);
-        card.appendChild(list);
-        CONTAINER.append(card);
+        const CARD = document.createElement("details");
+        CARD.className = "big__card";
+        const LIST = createList();
+        const TRACKLINK = createLink(track);
+        CARD.appendChild(createName(track));
+        const ARTISTLINK = createArtistLink(track)
+        ARTISTLINK.appendChild(createArtist(track));
+        LIST.appendChild(ARTISTLINK);
+        LIST.appendChild(createPlayCount(track));
+        LIST.appendChild(createListenersCount(track));
+        TRACKLINK.appendChild(createLastFMLink());
+        LIST.appendChild(TRACKLINK);
+        CARD.appendChild(LIST);
+        CONTAINER.append(CARD);
       })
     );
 }
 
+/**
+ * Очистка контейнера и установка параметров GET-запроса для поиска по трекам
+ * @param {*} value значение из поисковой строки
+ */
 function setSearchedMusicSettings(value) {
   clearContainer();
   INITURL.search = `?method=track.search&limit=50&track=${value}&api_key=1fe17e4127c70141e07c5d5e79122d40&format=json`;
   getSearchedMusic();
 }
 
+/**
+ * GET-запрос списка поиска по трекам и создание результатов поиска
+ */
 function getSearchedMusic() {
   fetch(INITURL)
     .then((result) => result.json())
     .then((data) =>
       data.results.trackmatches.track.forEach((track) => {
-        card = document.createElement("details");
-        card.className = "small__card";
-        list = createList();
-        trackLink = createLink(track);
-        card.appendChild(createName(track));
-        list.appendChild(createListenersCount(track));
-        trackLink.appendChild(createLastFMLink());
-        list.appendChild(trackLink);
-        card.appendChild(list);
-        CONTAINER.append(card);
+        const CARD = document.createElement("details");
+        CARD.className = "small__card";
+        const LIST = createList();
+        const TRACKLINK = createLink(track);
+        CARD.appendChild(createName(track));
+        LIST.appendChild(createListenersCount(track));
+        TRACKLINK.appendChild(createLastFMLink());
+        LIST.appendChild(TRACKLINK);
+        CARD.appendChild(LIST);
+        CONTAINER.append(CARD);
       })
     );
 }
 
+/**
+ * Очистка контейнера и установка параметров GET-запроса для списка лучших исполнителей
+ */
 function setTopArtistsSettings() {
   clearContainer();
   INITURL.search =
@@ -145,26 +202,33 @@ function setTopArtistsSettings() {
   getTopArtists();
 }
 
+/**
+ * GET-запрос списка лучших исполнителей и создание списка
+ */
 function getTopArtists() {
   fetch(INITURL)
     .then((result) => result.json())
     .then((data) =>
       data.artists.artist.forEach((artist) => {
-        card = document.createElement("details");
-        card.className = "medium__card";
-        list = createList();
-        artistLink = createLink(artist);
-        card.appendChild(createName(artist));
-        list.appendChild(createPlayCount(artist));
-        list.appendChild(createListenersCount(artist));
-        artistLink.appendChild(createLastFMLink());
-        list.appendChild(artistLink);
-        card.appendChild(list);
-        CONTAINER.append(card);
+        const CARD = document.createElement("details");
+        CARD.className = "medium__card";
+        const LIST = createList();
+        const ARTISTLINK = createLink(artist);
+        CARD.appendChild(createName(artist));
+        LIST.appendChild(createPlayCount(artist));
+        LIST.appendChild(createListenersCount(artist));
+        ARTISTLINK.appendChild(createLastFMLink());
+        LIST.appendChild(ARTISTLINK);
+        CARD.appendChild(LIST);
+        CONTAINER.append(CARD);
       })
     );
 }
 
+/**
+ * Очистка контейнера и установка параметров GET-запроса для поиска по исполнителям
+ * @param {*} value значение из поисковой строки
+ */
 function setSearchedArtistsSettings(value) {
   clearContainer();
   INITURL.search =
@@ -172,23 +236,27 @@ function setSearchedArtistsSettings(value) {
   getSearchedArtists();
 }
 
+/**
+ * GET-запрос списка поиска по исполнителям и создание результатов поиска
+ */
 function getSearchedArtists() {
   fetch(INITURL)
     .then((result) => result.json())
     .then((data) =>
       data.results.artistmatches.artist.forEach((artist) => {
-        card = document.createElement("details");
-        card.className = "small__card";
-        list = createList();
-        artistLink = createLink(artist);
-        card.appendChild(createName(artist));
-        list.appendChild(createListenersCount(artist));
-        artistLink.appendChild(createLastFMLink());
-        list.appendChild(artistLink);
-        card.appendChild(list);
-        CONTAINER.append(card);
+        const CARD = document.createElement("details");
+        CARD.className = "small__card";
+        const LIST = createList();
+        const ARTISTLINK = createLink(artist);
+        CARD.appendChild(createName(artist));
+        LIST.appendChild(createListenersCount(artist));
+        ARTISTLINK.appendChild(createLastFMLink());
+        LIST.appendChild(ARTISTLINK);
+        CARD.appendChild(LIST);
+        CONTAINER.append(CARD);
       })
     );
 }
 
+/** Вызов функции со списком треков */
 setTopMusicSettings();
