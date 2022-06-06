@@ -32,6 +32,18 @@
     padding-left: 20px;
 }
 
+.header__link {
+    width: 10%;
+    height: 10%;
+    border-radius: 30px;
+    padding: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none
+}
+
 .content {
     color: #fff;
     background-color: #808080;
@@ -44,31 +56,70 @@
     display: grid;
     gap: 10px;
 }
-  
-.card {
-    height: 60px;
+
+.big__card {
+    height: 70px;
     background-color: #696969;
     display: flex;
-    justify-content: flex-start;
     gap: 10px;
-    align-items: center;
     margin: 5px 5px 5px 5px;
 }
 
-.card__image {
-    height: 20px;
-    width: 20px;
+.big__card[open] {
+    height: 170px;
+}
+
+.medium__card {
+    height: 70px;
+    background-color: #696969;
+    display: flex;
+    gap: 10px;
+    margin: 5px 5px 5px 5px;
+}
+
+.medium__card[open] {
+    height: 145px;
+}
+
+.small__card {
+    height: 70px;
+    background-color: #696969;
+    display: flex;
+    gap: 10px;
+    margin: 5px 5px 5px 5px;
+}
+
+.small__card[open] {
+    height: 120px;
+}
+
+.card__summary {
+    font-size: 24px;
+    padding-top: 15px;
+    padding-left: 10px;
+}
+
+.card__list {
+    font-size: 20px;
+    padding-left: 30px;
+    padding-top: 5px;
+}
+
+.card__link {
+    cursor: pointer;
+    color: #fff;
+    text-decoration: underline
 }
 
 .spotify__logo {
     align-items: center;
-    width: 150px;   
+    width: 150px;
 }
 
 .side__menu {
     padding: 10px;
     background-color: #696969;
-    border-right: 1px solid #c0c0c0;   
+    border-right: 1px solid #c0c0c0;
 }
 
 .menu__items {
@@ -84,7 +135,7 @@
     text-decoration: none
 }
 
-.menu__link:hover{
+.menu__link:hover {
     color: #2f4f4f;
 }
 
@@ -107,6 +158,6 @@
     text-decoration: none
 }
 
-.footer__link:hover{
+.footer__link:hover {
     color: #d3d3d3;
 }

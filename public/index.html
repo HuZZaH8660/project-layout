@@ -15,35 +15,12 @@
     </header>
     <aside class="side__menu">
       <ul class="menu__items">
-        <li class="menu__link">Плейлисты</li>
-        <li class="menu__link">Подкасты</li>
-        <li class="menu__link">Исполнители</li>
-        <li class="menu__link">Альбомы</li>
+        <li class="menu__link" onclick="setTopArtistsSettings()">Исполнители</li>
+        <li class="menu__link" onclick="setTopMusicSettings()">Треки</li>
       </ul>
     </aside>
     <main class="content">
-      <div class="cards__container">
-        <div class="card">
-          <img class="card__image" src="./spotify.png">
-          <p>Sample</p>
-        </div>
-        <div class="card">
-          <img class="card__image" src="./spotify.png">
-          <p>Sample</p>
-        </div>
-        <div class="card">
-          <img class="card__image" src="./spotify.png">
-          <p>Sample</p>
-        </div>
-        <div class="card">
-          <img class="card__image" src="./spotify.png">
-          <p>Sample</p>
-        </div>
-        <div class="card">
-          <img class="card__image" src="./spotify.png">
-          <p>Sample</p>
-        </div>
-      </div>
+      <div class="cards__container"></div>
     </main>
     <footer class="footer">
       <nav class="footer__navigation">
@@ -53,5 +30,6 @@
           Wikipedia</a>
       </nav>
     </footer>
+    <script async src="./script.js"></script>
   </body>
 </html>
