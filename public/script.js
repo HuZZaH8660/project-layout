@@ -8,7 +8,12 @@ let flag = 1;
 SEARCH.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     if (e.target.value === "") {
-      setTopMusicSettings();
+      switch (flag) {
+        case 1:
+          setTopMusicSettings();
+        case 2:
+          setTopArtistsSettings(e.target.value);
+      }
     } else {
       switch (flag) {
         case 1:
