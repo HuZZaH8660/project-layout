@@ -2,24 +2,29 @@
 const INITURL = new URL("https://ws.audioscrobbler.com/2.0/");
 const CONTAINER = document.querySelector(".cards__container");
 const SEARCH = document.querySelector(".header__search");
-let flag = 1;
+const ERROR = "Произошла ошибка, смотрите стек вызовов выше"
+let flag = "musicTop";
 
 /** Обработчик события для поиска по трекам или исполнителям в зависимости от значения flag */
 SEARCH.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     if (e.target.value === "") {
       switch (flag) {
-        case 1:
+        case "musicTop":
           setTopMusicSettings();
-        case 2:
-          setTopArtistsSettings(e.target.value);
+          break;
+        case "artistsTop":
+          setTopArtistsSettings();
+          break;
       }
     } else {
       switch (flag) {
-        case 1:
+        case "musicTop":
           setSearchedMusicSettings(e.target.value);
-        case 2:
+          break;
+        case "artistsTop":
           setSearchedArtistsSettings(e.target.value);
+          break;
       }
     }
   }
@@ -47,28 +52,50 @@ function createName(item) {
 }
 
 /**
- * Оболочка a для ссылки на исполнителя трека
+ * Оболочка a для ссылки на трек/исполнителя или исполнителя трека в зависимости от контекста вызова
  * @param {*} item трек/исполнитель
+ * @param {*} choice контекст вызова
  * @returns a элемент
  */
-function createArtistLink(item) {
-  const ARTISTLINK = document.createElement("a");
-  ARTISTLINK.className = "card__link";
-  ARTISTLINK.href = item.artist.url;
-  ARTISTLINK.target = "_blank";
-  ARTISTLINK.rel = "noopener";
-  return ARTISTLINK;
+function createAElement(item, choice) {
+  const AELEMENT = document.createElement("a");
+  AELEMENT.className = "card__link";
+  switch (choice){
+    case "artistForTrack":
+      AELEMENT.href = item.artist.url;
+      break;
+    case "trackOrArtist":
+      AELEMENT.href = item.url;
+      break;
+  }
+  AELEMENT.target = "_blank";
+  AELEMENT.rel = "noopener";
+  return AELEMENT;
 }
 
 /**
- * Имя исполнителя по треку
- * @param {*} item трек
+ * Функция для создания li элемента в зависимости от контекста вызова
+ * @param {*} item трек/исполнитель
+ * @param {*} choice контекст вызова
  * @returns li элемент
  */
-function createArtist(item) {
-  const ARTIST = document.createElement("li");
-  ARTIST.textContent = item.artist.name;
-  return ARTIST;
+function createLiElement(item, choice) {
+  const LIELEMENT = document.createElement("li");
+  switch (choice){
+    case "artistName":
+      LIELEMENT.textContent = item.artist.name;
+      break;
+    case "playCount":
+      LIELEMENT.textContent = "Количество прослушиваний: " + item.playcount;
+      break;
+    case "listenersCount":
+      LIELEMENT.textContent = "Количество слушателей: " + item.listeners;
+      break;
+    case "lastFMLink":
+      LIELEMENT.textContent = "Ссылка на Last FM";
+      break;
+  }
+  return LIELEMENT;
 }
 
 /**
@@ -82,59 +109,13 @@ function createList() {
 }
 
 /**
- * Поле с количеством прослушиваний трека/исполнителя
- * @param {*} item трек/исполнитель
- * @returns li элемент
- */
-function createPlayCount(item) {
-  const PLAYCOUNT = document.createElement("li");
-  PLAYCOUNT.textContent = "Количество прослушиваний: " + item.playcount;
-  return PLAYCOUNT;
-}
-
-/**
- * Поле с количеством слушателей трека/исполнителя
- * @param {*} item трек/исполнитель
- * @returns li элемент
- */
-function createListenersCount(item) {
-  const LISTENERSCOUNT = document.createElement("li");
-  LISTENERSCOUNT.textContent = "Количество слушателей: " + item.listeners;
-  return LISTENERSCOUNT;
-}
-
-/**
- * Оболочка a для ссылки на трек/исполнителя
- * @param {*} item трек/исполнитель
- * @returns a элемент
- */
-function createLink(item) {
-  const TRACKLINK = document.createElement("a");
-  TRACKLINK.className = "card__link";
-  TRACKLINK.href = item.url;
-  TRACKLINK.target = "_blank";
-  TRACKLINK.rel = "noopener";
-  return TRACKLINK;
-}
-
-/**
- * Поле с количеством прослушиваний трека/исполнителя
- * @returns li элемент
- */
-function createLastFMLink() {
-  const LASTFMLINK = document.createElement("li");
-  LASTFMLINK.textContent = "Ссылка на Last FM";
-  return LASTFMLINK;
-}
-
-/**
  * Очистка контейнера и установка параметров GET-запроса для списка лучших треков
  */
 function setTopMusicSettings() {
   clearContainer();
   INITURL.search =
     "?method=chart.gettoptracks&api_key=1fe17e4127c70141e07c5d5e79122d40&format=json";
-  flag = 1;
+  flag = "musicTop";
   getTopMusic();
 }
 
@@ -149,19 +130,20 @@ function getTopMusic() {
         const CARD = document.createElement("details");
         CARD.className = "big__card";
         const LIST = createList();
-        const TRACKLINK = createLink(track);
+        const TRACKLINK = createAElement(track, "trackOrArtist");
         CARD.appendChild(createName(track));
-        const ARTISTLINK = createArtistLink(track)
-        ARTISTLINK.appendChild(createArtist(track));
+        const ARTISTLINK = createAElement(track, "artistForTrack")
+        ARTISTLINK.appendChild(createLiElement(track, "artistName"));
         LIST.appendChild(ARTISTLINK);
-        LIST.appendChild(createPlayCount(track));
-        LIST.appendChild(createListenersCount(track));
-        TRACKLINK.appendChild(createLastFMLink());
+        LIST.appendChild(createLiElement(track, "playCount"));
+        LIST.appendChild(createLiElement(track, "listenersCount"));
+        TRACKLINK.appendChild(createLiElement(null, "lastFMLink"));
         LIST.appendChild(TRACKLINK);
         CARD.appendChild(LIST);
         CONTAINER.append(CARD);
       })
-    );
+    )
+    .catch((e) => console.log(e, ERROR));
 }
 
 /**
@@ -171,6 +153,7 @@ function getTopMusic() {
 function setSearchedMusicSettings(value) {
   clearContainer();
   INITURL.search = `?method=track.search&limit=50&track=${value}&api_key=1fe17e4127c70141e07c5d5e79122d40&format=json`;
+  flag = "musicTop";
   getSearchedMusic();
 }
 
@@ -185,15 +168,16 @@ function getSearchedMusic() {
         const CARD = document.createElement("details");
         CARD.className = "small__card";
         const LIST = createList();
-        const TRACKLINK = createLink(track);
+        const TRACKLINK = createAElement(track, "trackOrArtist");
         CARD.appendChild(createName(track));
-        LIST.appendChild(createListenersCount(track));
-        TRACKLINK.appendChild(createLastFMLink());
+        LIST.appendChild(createLiElement(track, "listenersCount"));
+        TRACKLINK.appendChild(createLiElement(null, "lastFMLink"));
         LIST.appendChild(TRACKLINK);
         CARD.appendChild(LIST);
         CONTAINER.append(CARD);
       })
-    );
+    )
+    .catch((e) => console.log(e, ERROR));
 }
 
 /**
@@ -203,7 +187,7 @@ function setTopArtistsSettings() {
   clearContainer();
   INITURL.search =
     "?method=chart.gettopartists&api_key=1fe17e4127c70141e07c5d5e79122d40&format=json";
-  flag = 2;
+  flag = "artistsTop";
   getTopArtists();
 }
 
@@ -218,16 +202,17 @@ function getTopArtists() {
         const CARD = document.createElement("details");
         CARD.className = "medium__card";
         const LIST = createList();
-        const ARTISTLINK = createLink(artist);
+        const ARTISTLINK = createAElement(artist, "trackOrArtist");
         CARD.appendChild(createName(artist));
-        LIST.appendChild(createPlayCount(artist));
-        LIST.appendChild(createListenersCount(artist));
-        ARTISTLINK.appendChild(createLastFMLink());
+        LIST.appendChild(createLiElement(artist, "playCount"));
+        LIST.appendChild(createLiElement(artist, "listenersCount"));
+        ARTISTLINK.appendChild(createLiElement(null, "lastFMLink"));
         LIST.appendChild(ARTISTLINK);
         CARD.appendChild(LIST);
         CONTAINER.append(CARD);
       })
-    );
+    )
+    .catch((e) => console.log(e, ERROR));
 }
 
 /**
@@ -238,6 +223,7 @@ function setSearchedArtistsSettings(value) {
   clearContainer();
   INITURL.search =
     `?method=artist.search&artist=${value}&api_key=1fe17e4127c70141e07c5d5e79122d40&format=json`;
+  flag = "artistsTop";
   getSearchedArtists();
 }
 
@@ -252,15 +238,16 @@ function getSearchedArtists() {
         const CARD = document.createElement("details");
         CARD.className = "small__card";
         const LIST = createList();
-        const ARTISTLINK = createLink(artist);
+        const ARTISTLINK = createAElement(artist, "trackOrArtist");
         CARD.appendChild(createName(artist));
-        LIST.appendChild(createListenersCount(artist));
-        ARTISTLINK.appendChild(createLastFMLink());
+        LIST.appendChild(createLiElement(artist, "listenersCount"));
+        ARTISTLINK.appendChild(createLiElement(null, "lastFMLink"));
         LIST.appendChild(ARTISTLINK);
         CARD.appendChild(LIST);
         CONTAINER.append(CARD);
       })
-    );
+    )
+    .catch((e) => console.log(e, ERROR));
 }
 
 /** Вызов функции со списком треков */
