@@ -1,10 +1,8 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { MyContext } from "../Context";
 import { useContext } from "react";
 
 function Aside() {
-  // eslint-disable-next-line no-unused-vars
-  const { _, setBoolMusic } = useContext(MyContext);
+  const { setBoolMusic } = useContext(MyContext);
 
   const setTopMusicSettings = () => {
     setBoolMusic(true);

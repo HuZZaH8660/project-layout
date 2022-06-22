@@ -4,8 +4,7 @@ import { MyContext } from "../Context";
 import { useContext } from "react";
 
 function Content() {
-  // eslint-disable-next-line no-unused-vars
-  const { boolMusic, _, search, __ } = useContext(MyContext);
+  const { boolMusic, search } = useContext(MyContext);
   return (
     <div className="cards__container">
       {boolMusic ? (
